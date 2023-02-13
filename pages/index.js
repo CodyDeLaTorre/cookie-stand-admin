@@ -1,21 +1,24 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import { useState } from 'react';
+import Header from '../components/Header';
+import CreateForm from '../components/CreateForm';
+import ReportTable from '../components/ReportTable';
+import Footer from '../components/Footer';
 
-export default function Home() {
-  const [locations, setLocations] = useState([])
+export default function CookieStandAdmin() {
+  const [locations, setLocations] = useState([]);
 
   function locationHandler(event) {
     event.preventDefault();
     const location = {
       name: event.target.location.value,
-      minCustomers: event.target.minCust.value,
-      maxCustomers: event.target.maxCust.value,
-      avgCookies: event.target.avgSales.value,
+      minCustomers: parseInt(event.target.minCust.value),
+      maxCustomers: parseInt(event.target.maxCust.value),
+      avgCookies: parseFloat(event.target.avgSales.value),
       id: locations.length
     };
-    setLocations([...locations, location])
-  }
+    setLocations([...locations, location]);
+  };
   return (
     <>
       <Head>
@@ -24,58 +27,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <header className='flex items-start p-4 bg-gray-400 text-gray-50'>
-        <h1 className='text-4xl'>Cookie Stand Admin</h1>
-      </header>
-
+      <Header/>
       <main className=''>
-        <form className='w-3/4 p-2 mx-auto my-4 bg-gray-400 rounded-md' onSubmit={locationHandler}>
-          <h2 className='text-3xl text-center text-gray-50'>Create Cookie Stand</h2>
-          <div className="flex justify-around p-3 my-4">
-            <label for="location" className="p-1">Location</label>
-            <input name="location" id="location" className='flex-auto pl-1' />
-          </div>
-          <div className="flex justify-between p-3 my-4">
-            <div>
-              <label for="min-cust">Minimum Customers per Hour</label>
-              <input type="number" name="min-cust" id="minCust" className= 'pl-1' />
-            </div>
-            <div>
-              <label for="max-cust">Maximum Customers per Hour</label>
-              <input type="number" name="max-cust" id="maxCust" className='pl-1' />
-            </div>
-            <div>
-              <label for='average-sale'>Average Cookies per Sale</label>
-              <input type="number" name="average-sale" id="avgSale" className=' pl-1' />
-            </div>
-            <button className='px-7 py-1 bg-gray-500 text-gray-50'>Create</button>
-          </div>
-        </form>
-        <div className='mx-auto text-center'>
-          <h2>Report Table Coming Soon</h2>
-        </div>
-        {/* <table>
-          <thead>
-            <tr>
-              <th>No.</th>
-              <th>Question</th>
-              <th>Respones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> 1.</td>
-              <td>Will is Rain?</td>
-              <td>Yes.</td>
-            </tr>
-          </tbody>
-        </table>*/}
+        <CreateForm locationHandler={locationHandler}/>
+        <ReportTable locations={locations}/>
       </main>
-
-      <footer className='flex items-center justify-between p-4 bg-gray-400 text-gray-50'>
-        <p>&copy; 2023</p>
-      </footer>
+      <Footer locations={locations}/>
     </>
   );
 }
