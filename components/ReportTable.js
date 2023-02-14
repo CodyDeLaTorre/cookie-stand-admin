@@ -1,34 +1,23 @@
-import { hours } from '../data.js';
-const hourly_sales = [48, 42, 30, 24, 42, 24, 36, 42, 42, 48, 36, 42, 24, 36];
+import CookieStandRow from '@/components/CookieStandRow';
 
-export default function ReportTable(props) {
-  return props.locations.length > 0 ? (
-    <table className='w-1/2 mx-auto my-4'>
-      <thead>
-        <tr>
-          <th className='border border-gray-700'>Location</th>
-          {hours.map((hour) => {
-            return (
-              <th className='border border-gray-700' key={hour.id}>{hour}</th>
-            )
-          })}
-          <th className='border border-gray-700'>Totals</th>
-        </tr>
-      </thead>
-      <tbody>
-          {props.locations.map(location => (
-            <tr className='pl-2 border border-gray-700' key={location.id}>{location.name}
-            {hourly_sales.map(sale => (
-              <td className='pl-2 border border-gray-700' key={sale.id}>{sale}</td>
-            ))}
-              <td className="pl-2 border border-gray-700">{hourly_sales.reduce((num, sum) => num + sum, 0)}</td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
-  ) : (
-    <div className='mx-auto text-center'>
-      <h2 className='text-center p-6 text-3xl'>No Cookie Stands Available</h2>
-    </div>
-  );
+export default function CookieStandTable({ stands, deleteStand }) {
+
+    const headerTimes = ["6 am", "7 am", "8 am", "9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm", "6 pm", "7 pm"];
+
+    return (
+        <table className="mx-auto border border-black text-center font-serif shadow-gray-500 shadow-md">
+            <thead>
+                <tr className="bg-gray-500">
+                    <th className="border border-black px-2 py-1">Location</th>
+                    {headerTimes.map((time, index) => <th className="border border-black px-2 py-1" key={index}>{time}</th>)}
+                    <th className="border border-black px-2 py-1">Totals</th>
+                </tr>
+            </thead>
+            <tbody>
+                {stands.map(stand => (
+                    <CookieStandRow key={stand.id} info={stand} deleteStand={deleteStand} />
+                ))}
+            </tbody>
+        </table>
+    );
 }
